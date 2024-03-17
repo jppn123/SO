@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         splitCommand = strtok(NULL, " \n");
       }
 
-      //final da lista setado para null, para evitar possiveis complicações
+      //final da lista setado para null, para parar o execvp utilizado posteriormente
       args[i] = NULL;
 
       //criação do processo filho que irá executar os comandos
