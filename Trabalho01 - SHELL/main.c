@@ -7,7 +7,7 @@
 
 #define TAM 50
 
-int main(int argc, char *argv[]) {
+int main() {
   //declaração das variáveis
   pid_t pid;
   int st_pai, st_filho, i;
