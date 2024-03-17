@@ -1,3 +1,3 @@
 # SO
 
-Repositório destinado aos trabalhos/códigos da cadeira de Sistemas Operacionais.
+Repositório destinado aos códigos da cadeira de Sistemas Operacionais.
