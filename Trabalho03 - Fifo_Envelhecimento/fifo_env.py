@@ -103,7 +103,9 @@ with open("faltas_pag.txt", "w") as falta_file:
         clear_file.close()
 
     for num_frame in range(1, total_frames + 1):
-        paginas = [random.choice(alfa) for _ in range(num_ender)]
+        paginas.clear()
+        for _ in range(num_ender):
+            paginas.append(random.choice(alfa))
 
         fifo = Fifo(num_pags)
         env = Envelhecimento(num_pags)
