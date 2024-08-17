@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 from fila import Queue
 
 class Fifo:
@@ -16,7 +17,7 @@ class Fifo:
                 self.frames.remove()
                 self.frames.push(pag)
             self.pag_falta += 1
-        self.frames.printQueue()
+        
         
 
 class Envelhecimento:
@@ -93,6 +94,9 @@ num_pags = 10
 num_ender = 1000
 total_frames = 20
 faltas = []
+paginas = []
+resultados = []
+#fifo_sempre = ['7', '0', '1', '2', '0', '3', '0', '4', '2', '3', '0', '3', '2', '1', '2', '0', '1', '7', '0', '1']
 alfa = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 nome_pag_frame = "pags_frame.txt"
 
@@ -106,7 +110,8 @@ with open("faltas_pag.txt", "w") as falta_file:
         paginas.clear()
         for _ in range(num_ender):
             paginas.append(random.choice(alfa))
-
+            #paginas.append(random.randint(0, num_ender - 1))
+            
         fifo = Fifo(num_pags)
         env = Envelhecimento(num_pags)
 
@@ -115,19 +120,34 @@ with open("faltas_pag.txt", "w") as falta_file:
             env.paginar(pagina)
         
         falta_file.write(f"{num_frame}\t{fifo.pag_falta}\t{' '*5}{env.pag_falta}\n")
-
+        
         if fifo.pag_falta > env.pag_falta:
             faltas.append("fifo")
-        else:
+        elif fifo.pag_falta < env.pag_falta:
             faltas.append("env")
 
         with open(nome_pag_frame, "a") as pag_frame_file:
             pag_frame_file.write(f"Páginas do frame {str(num_frame)}:" + '\n')
-            pag_frame_file.write(' '.join(paginas) + '\n\n\n')
+            pag_frame_file.write(''.join(str(paginas)) + '\n\n\n')
+
+        resultados.append((num_frame, fifo.pag_falta, env.pag_falta))
+
             
     tot_faltas = "Fifo" if faltas.count("fifo") > faltas.count("env") else "Envelhecimento" 
     tot_faltas = "Igual" if faltas.count("fifo") == faltas.count("env") else tot_faltas
+    print(faltas.count("fifo"))
+    print(faltas.count("env"))
+
     falta_file.write(f"\nMais faltas:\t{tot_faltas}")
+frames, fifo_faults, aging_faults = zip(*resultados)
+
+plt.plot(frames, fifo_faults, label="FIFO")
+plt.plot(frames, aging_faults, label="Envelhecimento")
+plt.xlabel("quantidade de molduras de página")
+plt.ylabel("faltas de página")
+plt.legend()
+plt.title("comparação faltas de página fifo x envelhecimento")
+plt.show()
 
 pag_frame_file.close()
 falta_file.close()  
